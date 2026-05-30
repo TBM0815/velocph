@@ -219,6 +219,21 @@ export default function App() {
   };
 
   const generateRoute = async () => {
+    setAddressError("");
+
+    // ── 1. Geocode FIRST — abort with error if address not found ──────────
+    const defaultStart = { lat: 55.6726, lng: 12.5655, name: "Copenhagen Central Station" };
+    let startCoord = defaultStart;
+    if (startPoint.trim()) {
+      const geocoded = await geocodeAddress(startPoint.trim());
+      if (!geocoded) {
+        setAddressError(`"${startPoint}" was not found in Copenhagen. Try a street name, neighbourhood, or hotel — or leave blank to start from Central Station.`);
+        return; // Stay on startpoint screen, do NOT proceed
+      }
+      startCoord = geocoded;
+    }
+
+    // ── 2. Now safe to proceed ────────────────────────────────────────────
     setStep("generating");
 
     const hours = parseInt(answers.time || "3");
@@ -228,38 +243,37 @@ export default function App() {
     const prefer = wx.prefer;
     const isSunny = wxClass === "clear" || wxClass === "partlycloudy";
 
-    // Categories to include
+    // ── 3. Build stop pool strictly from selected categories ──────────────
+    // No fallback from unselected categories — this ensures real variation
+    // based on user choices. Kids/playgrounds only when children selected.
+    const kidOnlyCats = ["kids", "playgrounds"];
     let interests = answers.interests.length > 0 ? [...answers.interests] : ["history", "food", "nature"];
     if (hasKids) {
       interests.push("kids");
       if (isSunny) interests.push("playgrounds");
     }
 
-    // kids/playgrounds categories are NEVER shown without children
-    const kidOnlyCats = ["kids", "playgrounds"];
-    const allCats = Object.keys(stops);
-
-    // Build pool — selected interests first, then fallback
     let pool = [];
     for (const cat of interests) {
-      pool.push(...(stops[cat] || []).filter(s => {
-        if (hasKids && !s.kidFriendly) return false;
-        if (prefer === "indoor" && !s.indoorOption) return false;
-        return true;
-      }));
-    }
-    // Fallback: fill from non-selected categories, skipping kid-only cats if no kids
-    for (const cat of allCats.filter(c => !interests.includes(c))) {
-      if (!hasKids && kidOnlyCats.includes(cat)) continue;
-      pool.push(...(stops[cat] || []).filter(s => {
+      const catStops = (stops[cat] || []).filter(s => {
         if (!hasKids && kidOnlyCats.includes(cat)) return false;
         if (prefer === "indoor" && !s.indoorOption) return false;
         return true;
-      }));
+      });
+      pool.push(...catStops);
     }
+
+    // Only use fallback if pool is too small to fill any route at all
+    if (pool.length < 2) {
+      const allCats = Object.keys(stops);
+      for (const cat of allCats.filter(c => !interests.includes(c))) {
+        if (kidOnlyCats.includes(cat)) continue;
+        pool.push(...(stops[cat] || []).filter(s => prefer === "indoor" ? s.indoorOption : true));
+      }
+    }
+
     pool = pool.filter((s, i, arr) => arr.findIndex(x => x.name === s.name) === i);
-    // Fresh shuffle on every generation so results vary
-    pool = pool.sort(() => Math.random() - 0.5);
+    pool = pool.sort(() => Math.random() - 0.5); // Fresh shuffle every time
 
     // Fill time budget greedily
     let rawStops = [], totalTime = 0;
@@ -271,14 +285,6 @@ export default function App() {
       }
     }
     if (rawStops.length < 2) rawStops = pool.slice(0, Math.min(2, pool.length));
-
-    // Geocode start point
-    const defaultStart = { lat: 55.6726, lng: 12.5655, name: "Copenhagen Central Station" };
-    let startCoord = defaultStart;
-    if (startPoint.trim()) {
-      const geocoded = await geocodeAddress(startPoint.trim());
-      if (geocoded) startCoord = geocoded;
-    }
 
     // Nearest-neighbour TSP optimisation
     const finalStops = optimiseOrder(startCoord, rawStops);
