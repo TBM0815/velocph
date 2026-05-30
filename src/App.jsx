@@ -43,6 +43,7 @@ const QUESTIONS = [
       { value: "nature",   label: "Parks & Nature",    icon: "🌿" },
       { value: "design",   label: "Design & Culture",  icon: "🪑" },
       { value: "hidden",   label: "Hidden Gems",       icon: "✌️" },
+      { value: "classics", label: "Classic Sightseeing", icon: "🧜" },
     ],
   },
   { id: "group", question: "Who's coming along?", subtitle: "We'll tailor the route for your group", multi: false,
