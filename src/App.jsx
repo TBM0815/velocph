@@ -11,51 +11,7 @@ L.Icon.Default.mergeOptions({
   shadowUrl: new URL("leaflet/dist/images/marker-shadow.png", import.meta.url).href,
 });
 
-// ─── STOP DATABASE ────────────────────────────────────────────────────────────
-const STOPS = {
-  history: [
-    { name: "Rosenborg Castle", desc: "17th century royal castle with crown jewels", duration: 40, emoji: "🏰", kidFriendly: true, indoorOption: true, lat: 55.6860, lng: 12.5770 },
-    { name: "Christiansborg Palace", desc: "Seat of Danish Parliament on Slotsholmen island", duration: 35, emoji: "⚓", kidFriendly: true, indoorOption: true, lat: 55.6763, lng: 12.5800 },
-    { name: "Rundetårn", desc: "Round Tower observatory from 1642 with a famous spiral ramp", duration: 30, emoji: "🔭", kidFriendly: true, indoorOption: true, lat: 55.6815, lng: 12.5757 },
-    { name: "Nyhavn Harbour", desc: "Iconic colourful canal houses — waterfront cycling heaven", duration: 25, emoji: "⛵", kidFriendly: true, indoorOption: false, lat: 55.6796, lng: 12.5904 },
-  ],
-  food: [
-    { name: "Torvehallerne Market", desc: "Copenhagen's finest food hall — coffee, smørrebrød, fresh produce", duration: 35, emoji: "🥪", kidFriendly: true, indoorOption: true, lat: 55.6834, lng: 12.5700 },
-    { name: "Reffen Street Food", desc: "Waterfront container market with 50+ international stalls", duration: 35, emoji: "🌮", kidFriendly: true, indoorOption: false, lat: 55.6717, lng: 12.6083 },
-    { name: "La Glace Konditori", desc: "Copenhagen's oldest patisserie since 1870 — kids will love it", duration: 25, emoji: "🍰", kidFriendly: true, indoorOption: true, lat: 55.6789, lng: 12.5727 },
-    { name: "Nørreport Street Food", desc: "Local vendors, organic snacks, Danish pastries", duration: 20, emoji: "🥐", kidFriendly: true, indoorOption: false, lat: 55.6831, lng: 12.5706 },
-  ],
-  nature: [
-    { name: "Kongens Have", desc: "King's Garden — Copenhagen's oldest royal park", duration: 25, emoji: "🌿", kidFriendly: true, indoorOption: false, lat: 55.6856, lng: 12.5757 },
-    { name: "Frederiksberg Gardens", desc: "Romantic English-style garden with canal boats", duration: 35, emoji: "🦢", kidFriendly: true, indoorOption: false, lat: 55.6741, lng: 12.5215 },
-    { name: "The Lakes (Søerne)", desc: "Three connected lakes — perfect cycling loop with cafés", duration: 25, emoji: "🚴", kidFriendly: true, indoorOption: false, lat: 55.6833, lng: 12.5560 },
-    { name: "Amager Strandpark", desc: "Copenhagen's beach park — sandy shores on the Øresund", duration: 40, emoji: "🏖️", kidFriendly: true, indoorOption: false, lat: 55.6567, lng: 12.6383 },
-  ],
-  design: [
-    { name: "Designmuseum Danmark", desc: "World-class Danish design and applied arts", duration: 50, emoji: "🪑", kidFriendly: false, indoorOption: true, lat: 55.6883, lng: 12.5937 },
-    { name: "Superkilen Park", desc: "BIG-designed urban park celebrating global cultures", duration: 25, emoji: "🎨", kidFriendly: true, indoorOption: false, lat: 55.6967, lng: 12.5494 },
-    { name: "SMK National Gallery", desc: "Denmark's largest art museum — free for under-18s", duration: 45, emoji: "🖼️", kidFriendly: true, indoorOption: true, lat: 55.6886, lng: 12.5778 },
-  ],
-  hidden: [
-    { name: "Assistens Cemetery", desc: "Where Kierkegaard & Andersen rest — locals picnic here", duration: 20, emoji: "🌺", kidFriendly: true, indoorOption: false, lat: 55.6927, lng: 12.5484 },
-    { name: "Freetown Christiania", desc: "Europe's most famous alternative community since 1971", duration: 35, emoji: "✌️", kidFriendly: false, indoorOption: false, lat: 55.6731, lng: 12.5994 },
-    { name: "Cisternerne", desc: "Underground lake turned contemporary art space", duration: 30, emoji: "💧", kidFriendly: false, indoorOption: true, lat: 55.6728, lng: 12.5223 },
-    { name: "Papirøen (Paper Island)", desc: "Former paper warehouse turned creative waterfront hub", duration: 25, emoji: "🏗️", kidFriendly: true, indoorOption: true, lat: 55.6736, lng: 12.5951 },
-  ],
-  kids: [
-    { name: "Copenhagen Zoo", desc: "One of Europe's oldest zoos — pandas, elephants, polar bears", duration: 90, emoji: "🐘", kidFriendly: true, indoorOption: true, lat: 55.6723, lng: 12.5190 },
-    { name: "Experimentarium", desc: "Science discovery centre — hands-on experiments for all ages", duration: 75, emoji: "🔬", kidFriendly: true, indoorOption: true, lat: 55.7278, lng: 12.5780 },
-    { name: "Tivoli Gardens", desc: "The legendary amusement park in the heart of the city", duration: 90, emoji: "🎡", kidFriendly: true, indoorOption: false, lat: 55.6736, lng: 12.5681 },
-    { name: "Statens Naturhistoriske Museum", desc: "Natural history museum — dinosaurs and tropical greenhouse", duration: 60, emoji: "🦕", kidFriendly: true, indoorOption: true, lat: 55.6863, lng: 12.5756 },
-  ],
-  playgrounds: [
-    { name: "Superkilen Legeplads", desc: "Vibrant international playground inside Superkilen Park", duration: 30, emoji: "🛝", kidFriendly: true, indoorOption: false, lat: 55.6962, lng: 12.5492 },
-    { name: "Fælledparken Playground", desc: "Copenhagen's largest park — huge adventure playground with water play", duration: 35, emoji: "⛲", kidFriendly: true, indoorOption: false, lat: 55.6978, lng: 12.5658 },
-    { name: "Kongens Have Puppet Theatre", desc: "Open-air puppet shows in the King's Garden — classic Copenhagen summer", duration: 25, emoji: "🎭", kidFriendly: true, indoorOption: false, lat: 55.6858, lng: 12.5759 },
-  ],
-};
 
-const ALL_CATEGORIES = Object.keys(STOPS);
 
 const classifyWeather = (code) => {
   if (code === 0) return "clear";
@@ -195,6 +151,16 @@ export default function App() {
   const [weatherLoading, setWeatherLoading] = useState(false);
   const [startPoint, setStartPoint] = useState("");
   const [unlocked, setUnlocked] = useState(false);
+  const [stops, setStops] = useState({});
+  const [addressError, setAddressError] = useState("");
+
+  // Load stops from public/stops.json — edit that file to add/remove stops
+  useEffect(() => {
+    fetch("stops.json")
+      .then(r => r.json())
+      .then(data => setStops(data))
+      .catch(() => console.error("Could not load stops.json"));
+  }, []);
 
   useEffect(() => {
     const fetchWeather = async () => {
@@ -231,9 +197,13 @@ export default function App() {
       const q = encodeURIComponent(address + ", Copenhagen, Denmark");
       const res = await fetch(`https://nominatim.openstreetmap.org/search?q=${q}&format=json&limit=1`, { headers: { "Accept-Language": "en" } });
       const data = await res.json();
-      if (data?.[0]) return { lat: parseFloat(data[0].lat), lng: parseFloat(data[0].lon), name: data[0].display_name.split(",")[0] };
-    } catch {}
-    return null;
+      if (data?.[0]) {
+        return { lat: parseFloat(data[0].lat), lng: parseFloat(data[0].lon), name: data[0].display_name.split(",")[0] };
+      }
+      return null; // Not found
+    } catch {
+      return null;
+    }
   };
 
   const fetchOsrmRoute = async (points) => {
@@ -258,26 +228,37 @@ export default function App() {
     const prefer = wx.prefer;
     const isSunny = wxClass === "clear" || wxClass === "partlycloudy";
 
+    // Categories to include
     let interests = answers.interests.length > 0 ? [...answers.interests] : ["history", "food", "nature"];
-    if (hasKids) { interests.push("kids"); if (isSunny) interests.push("playgrounds"); }
+    if (hasKids) {
+      interests.push("kids");
+      if (isSunny) interests.push("playgrounds");
+    }
 
-    // Build pool — preferred categories first, fallback after
+    // kids/playgrounds categories are NEVER shown without children
+    const kidOnlyCats = ["kids", "playgrounds"];
+    const allCats = Object.keys(stops);
+
+    // Build pool — selected interests first, then fallback
     let pool = [];
     for (const cat of interests) {
-      pool.push(...(STOPS[cat] || []).filter(s => {
+      pool.push(...(stops[cat] || []).filter(s => {
         if (hasKids && !s.kidFriendly) return false;
         if (prefer === "indoor" && !s.indoorOption) return false;
         return true;
       }));
     }
-    for (const cat of ALL_CATEGORIES.filter(c => !interests.includes(c))) {
-      pool.push(...(STOPS[cat] || []).filter(s => {
-        if (hasKids && !s.kidFriendly) return false;
+    // Fallback: fill from non-selected categories, skipping kid-only cats if no kids
+    for (const cat of allCats.filter(c => !interests.includes(c))) {
+      if (!hasKids && kidOnlyCats.includes(cat)) continue;
+      pool.push(...(stops[cat] || []).filter(s => {
+        if (!hasKids && kidOnlyCats.includes(cat)) return false;
         if (prefer === "indoor" && !s.indoorOption) return false;
         return true;
       }));
     }
     pool = pool.filter((s, i, arr) => arr.findIndex(x => x.name === s.name) === i);
+    // Fresh shuffle on every generation so results vary
     pool = pool.sort(() => Math.random() - 0.5);
 
     // Fill time budget greedily
@@ -412,7 +393,12 @@ Reference the actual stop names and their sequence. Be vivid and local. No "Welc
             <p className="sp-sub">Your hotel, address, or neighbourhood. Leave blank to start from Central Station.</p>
             <input className="sp-input" type="text" placeholder="e.g. Nørreport, Hotel d'Angleterre, Vesterbro…" value={startPoint} onChange={e => setStartPoint(e.target.value)} onKeyDown={e => e.key === "Enter" && generateRoute()} />
             <button className="btn btn-full" onClick={generateRoute}>Generate my route →</button>
-            <p className="sp-skip" onClick={generateRoute}>Skip — start from Central Station</p>
+            {addressError && (
+              <div style={{ marginTop: 12, padding: "10px 14px", background: "#fff0ed", border: "1px solid #f5c4b8", borderRadius: 6, fontSize: 13, color: "#bf4e2a", lineHeight: 1.5 }}>
+                ⚠️ {addressError}
+              </div>
+            )}
+            <p className="sp-skip" onClick={() => { setStartPoint(""); setAddressError(""); generateRoute(); }}>Skip — start from Central Station</p>
           </div>
         </main>
       )}
